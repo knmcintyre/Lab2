@@ -60,7 +60,7 @@
         map.on('load', () => {
             map.addSource('outline', {
                 'type': 'geojson',
-                'data': 'file:///Users/kathrynmcintyre/Downloads/City_Boundary.geojson'
+                'data': 'City_Boundary.geojson'
             });
 
             //add the layer to the map
@@ -69,8 +69,8 @@
             'type': 'fill',
             'source': 'outline',
             'paint': {
-                'fill-color': 'rgba()',
-                'fill-outline-color': 'rgba()'
+                'fill-color': 'rgba(0, 0, 0)',
+                'fill-outline-color': 'rgba(0, 0, 0)'
             }
         });
         })
