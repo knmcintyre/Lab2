@@ -5,6 +5,7 @@
         <title>Victoria Heritage Buildings</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js'></script>
+        <script src="https://github.com/knmcintyre/Lab2/blob/main/City_Boundary.geojson"></script>
         <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css' rel='stylesheet' />
         <style>
           body { 
@@ -44,7 +45,7 @@
           // style URL for basemap
           style: 'mapbox://styles/kmcintyre/clfbjksqs000001lcz9ubihqe', //style
           center: [-123.3656, 48.4284], // coordinates of Victoria 
-          zoom: 13
+          zoom: 12.9
         });
         const insetMap = new mapboxgl.Map({
             container: 'inset-map',
@@ -56,28 +57,26 @@
         //add marker to the inset map
         new mapboxgl.Marker().setLngLat([-123.3656, 48.4284]).addTo(insetMap);
         
-        //add city outline
-        map.on('load', () => {
-            map.addSource('outline', {
+        //add new layer for Victoria's city boundary
+        map.on('load', function(){
+            map.addSource('city-boundary',{
                 'type': 'geojson',
-                'data': 'City_Boundary.geojson'
+                'data': cityBoundary //replace 'cityBoundary' with the varaible name used to store the data from the file
             });
-
-            //add the layer to the map
             map.addLayer({
-            'id': 'city-boundary',
-            'type': 'fill',
-            'source': 'outline',
-            'paint': {
-                'fill-color': 'rgba(0, 0, 0)',
-                'fill-outline-color': 'rgba(0, 0, 0)'
-            }
+                'id': 'city-boundary-layer',
+                'type': 'line',
+                'source': 'city-boundary',
+                'paint': {
+                    'line-color': '#888',
+                    'line-width': 2
+                }
+            });
         });
-        })
         //make it so that some info comes up when clicking!
         map.on('click', (event) => {
         //if user clicked on a marker, get some information
-        const features = map.queryRenderedFeatures(event.polygon,{
+        const features = map.queryRenderedFeatures(event.point,{
             layers: ['prominent-heritage-buildings-bptaee'] //layer name in square brackets in quotations!!
         });
         if (!features.length){ //this does not have to change based on any specific information
