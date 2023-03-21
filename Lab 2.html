@@ -5,7 +5,6 @@
         <title>Victoria Heritage Buildings</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js'></script>
-        <script src="https://raw.githubusercontent.com/knmcintyre/Lab2/main/City_Boundary.geojson"></script>
         <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css' rel='stylesheet' />
         <style>
           body { 
@@ -30,11 +29,42 @@
                 max-width: 400px;
                 font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
           }
+          #legend {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 4px;
+            font-size: 12px;
+            line-height: 1.5; 
+            box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+          }
+        .legend-symbol-line{
+            display: inline-block;
+            width: 20px;
+            height: 5px;
+            margin-right: 5px;
+            position: relative;
+          }
+          .legend-symbol-line::before{
+            content:"";
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 0;
+            right: 0;
+          }
+    
         </style>
       </head>
       <body>
         <div id='map'></div>
         <div id='inset-map'></div>
+        <div id='legend'>
+            <h4>Legend:</h4>
+            <div><span class="legend-symbol-line" style='background-color: #F5A33A'></span> City Boundary</div>
+        </div>
         <script>
         // The value for 'accessToken' begins with 'pk...'
         mapboxgl.accessToken = 'pk.eyJ1Ijoia21jaW50eXJlIiwiYSI6ImNsZW42aGVhcTA0ZHk0M3IxYnZ3dTI3NnQifQ.fc7azP61GdiiJbkhCKXHcw'; 
@@ -55,7 +85,7 @@
         //add marker to the inset map
         new mapboxgl.Marker().setLngLat([-123.3656, 48.4284]).addTo(insetMap);
         
-        //add new layer for Victoria's city boundary
+        //add new layer for Victoria's city boundary + legend information
         map.on('load', function(){
             map.addSource('city-boundary',{
                 'type': 'geojson',
@@ -68,9 +98,25 @@
                 'paint': {
                     'line-color': '#F5A33A',
                     'line-width': 2
+                },
+                'layout':{
+                    'visibility': 'visible'
                 }
-            });
+            }, 'waterway-label');
         });
+        //legend
+        const legend = document.getElementById('legend');
+        const legendSymbol = legend.querySelector('.legend-symbol');
+        legendSymbol.addEventListener('click', () => {
+            const visibility = map.getLayoutProperty('city-boundary-layer', 'visibility');
+            if (visibility === 'visible') {
+                map.setLayoutProperty('city-boundary-layer', 'visibility', 'none');
+                legendSymbol.style.opacity = 0.5;
+            } else {
+                map.setLayoutProperty('city-boundary-layer', 'visibility', 'visible');
+                legendSymbol.style.opacity = 1;
+            }
+            });
         //make it so that some info comes up when clicking!
         map.on('click', (event) => {
         //if user clicked on a marker, get some information
