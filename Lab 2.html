@@ -5,7 +5,7 @@
         <title>Victoria Heritage Buildings</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js'></script>
-        <script src="City_Boundary.geojson"></script>
+        <script src="https://raw.githubusercontent.com/knmcintyre/Lab2/main/City_Boundary.geojson"></script>
         <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css' rel='stylesheet' />
         <style>
           body { 
@@ -26,15 +26,13 @@
             height: 150px;
             z-index: 1;
           }
-        </style>
-      </head>
-      <body>
-        <style>
-            .mapboxgl-popup{
+          .mapboxgl-popup{
                 max-width: 400px;
                 font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
           }
         </style>
+      </head>
+      <body>
         <div id='map'></div>
         <div id='inset-map'></div>
         <script>
@@ -61,14 +59,14 @@
         map.on('load', function(){
             map.addSource('city-boundary',{
                 'type': 'geojson',
-                'data': cityBoundary //replace 'cityBoundary' with the varaible name used to store the data from the file
+                'data': 'https://raw.githubusercontent.com/knmcintyre/Lab2/main/City_Boundary.geojson' //this is supposed to be something 
             });
             map.addLayer({
                 'id': 'city-boundary-layer',
                 'type': 'line',
                 'source': 'city-boundary',
                 'paint': {
-                    'line-color': '#888',
+                    'line-color': '#F5A33A',
                     'line-width': 2
                 }
             });
