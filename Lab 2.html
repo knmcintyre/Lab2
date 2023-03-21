@@ -85,30 +85,56 @@
         //add marker to the inset map
         new mapboxgl.Marker().setLngLat([-123.3656, 48.4284]).addTo(insetMap);
         
-        //add new layer for Victoria's city boundary + legend information
         map.on('load', function(){
-            map.addSource('city-boundary',{
+            map.addSource('city-boundary',{ 
                 'type': 'geojson',
-                'data': 'https://raw.githubusercontent.com/knmcintyre/Lab2/main/City_Boundary.geojson' //this is supposed to be something 
+                'data': 'https://raw.githubusercontent.com/knmcintyre/Lab2/main/City_Boundary.geojson' //this is the raw datafile from github for Victoria's city boundary
             });
-            map.addLayer({
+            map.addLayer({ //city boundary layer
                 'id': 'city-boundary-layer',
                 'type': 'line',
                 'source': 'city-boundary',
                 'paint': {
-                    'line-color': '#F5A33A',
+                    'line-color': '#F5A33A', //choose an appropriate colour that stands our against the basemap
                     'line-width': 2
                 },
                 'layout':{
-                    'visibility': 'visible'
+                    'visibility': 'visible' //significant for the legend
                 }
             }, 'waterway-label');
+
+            //interactivity with clicking resulting in a pop up
+            map.on('click', (event) => {
+            //if user clicked on a marker, get some information
+            const features = map.queryRenderedFeatures(event.point,{
+                layers: ['prominent-heritage-buildings-bptaee'] //layer name in square brackets in quotations!!
+            });
+            if (!features.length){
+                return;
+            }
+            const feature = features[0];
+            //pop up
+            const popup = new mapboxgl.Popup({ offset: [0, -15]}) 
+            .setLngLat(feature.geometry.coordinates) //this is the problem!!!
+            .setHTML('<h3>'+feature.properties.Building+'</h3>') //specific to the file
+            .addTo(map);
+            });
+
+            //cursor changes to pointer when over the layer of interest 
+            map.on('mouseenter', 'prominent-heritage-buildings-bptaee', () => {
+            map.getCanvas().style.cursor = 'pointer';
+            });
+
+            //changes back when off the layer of interest 
+            map.on('mouseleave', 'prominent-heritage-buildings-bptaee', () => {
+            map.getCanvas().style.cursor = '';
+            });
         });
-        //legend
+        //build a legend to signify the layer displaying the city boundary
         const legend = document.getElementById('legend');
         const legendSymbol = legend.querySelector('.legend-symbol');
         legendSymbol.addEventListener('click', () => {
-            const visibility = map.getLayoutProperty('city-boundary-layer', 'visibility');
+            const visibility = map.getLayoutProperty('city-boundary-layer', 'visibility'); //ties back to previous written code regarding visibility
             if (visibility === 'visible') {
                 map.setLayoutProperty('city-boundary-layer', 'visibility', 'none');
                 legendSymbol.style.opacity = 0.5;
@@ -117,24 +143,6 @@
                 legendSymbol.style.opacity = 1;
             }
             });
-        //make it so that some info comes up when clicking!
-        map.on('click', (event) => {
-        //if user clicked on a marker, get some information
-        const features = map.queryRenderedFeatures(event.point,{
-            layers: ['prominent-heritage-buildings-bptaee'] //layer name in square brackets in quotations!!
-        });
-        if (!features.length){ //this does not have to change based on any specific information
-            return;
-        }
-        const feature = features[0];
-        //code for popups below with coordinates
-        const popup = new mapboxgl.Popup({ offset: [0, 15]})
-        .setLngLat(feature.geometry.coordinates)
-        .setHTML(
-            '<h3>'+feature.properties.Building.toString()+'</h3>' //string concantenation format (use name of building)
-        ).addTo(map)
-    });
     </script>
   </body>
 </html>
-
