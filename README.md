@@ -1,6 +1,6 @@
 # Lab 2: Heritage Buildings of Victoria 
 
-A screenshot of an area of the map which I find interesting: ![alt text](https://knmcintyre.github.io/Lab2/mapsegment.png "Interesting Map Segment")
+A screenshot of an area of the map which I find interesting: ![alt text](https://knmcintyre.github.io/Lab2/mapsegment2.png "Interesting Map Segment")
 
 Here we can see how the locations of the heritage buildings is more dense in comparison to other areas of the city. 
 
