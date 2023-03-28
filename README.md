@@ -4,7 +4,7 @@ A screenshot of an area of the map which I find interesting: ![alt text](https:/
 
 Here we can see how the locations of the heritage buildings is more dense in comparison to other areas of the city. 
 
-A link to the working map: 
+A link to the working map: https://knmcintyre.github.io/Lab2/Lab%202.html
 
 Collaborators:
 For this project, I used my roommate to suggest improvements upon the map design. They suggested that I changed a few of the details to make the inset map more significant and the land cover which is visible in the inset map more visually appealing. This led to the darkening of the colour of the US-Canadian border, because the prior colour made it too similar to the colour of the major highways which is still visible on this map which was visually confusing. They also suggested that I darken the colour of the city border, because it originally blended into the the map in some places. ChatGPT was used to suggest solutions to any errors in the code and pointed out a few spelling mistakes which caused some problems for me along the way. Other than that, the development of the code for creating this map came from what is available on the mapbox website and suggestions from online forums and what was shown in class. 
